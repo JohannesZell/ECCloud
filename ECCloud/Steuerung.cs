@@ -24,13 +24,13 @@ namespace ECCloud
             }
             else
             {
-                //checkUserValid();
+                checkUserValid();
             }
         }
 
         private void checkUserValid()
         {
-
+            
         }
 
         private bool checkIfFieldIsEmpty()
