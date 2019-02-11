@@ -18,14 +18,8 @@ namespace ECCloud
 
         public void Login()
         {
-            if (checkIfFieldIsEmpty() == true)
-            {
-                dieGUI.showMessage("Error!");
-            }
-            else
-            {
-                checkUserValid();
-            }
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
 
         private void checkUserValid()
