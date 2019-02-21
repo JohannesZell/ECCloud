@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +13,9 @@ namespace ECCloud
 {
     public partial class GUI : Form
     {
+        private Connector con;
         private Steuerung dieSteuerung;
+        private bool status = false;
         public GUI()
         {
             InitializeComponent();
@@ -36,7 +39,35 @@ namespace ECCloud
 
         private void B_Login_Click(object sender, EventArgs e)
         {
-            dieSteuerung.Login();
+            int sessionID = 0;
+            string User = TB_Username.Text;
+            string Password = TB_Password.Text;
+            HashAlgorithm sha = new SHA1CryptoServiceProvider();
+            int PWHash = Password.GetHashCode();
+            string message = con.CallRestMethod("http://localhost:53859/api/CloudAPI/GetFiles?User=" + User + "&PWHash=" + PWHash);
+            if (message == "false")
+            {
+                MessageBox.Show("Please check user or password!");
+                
+            }
+            else
+            {
+                MessageBox.Show("Connected");
+                dieSteuerung.Login();
+            }
+
+            
+        }
+
+        private void Init()
+        {
+
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
+            con = new Connector(53859, "127.0.0.1");
+            status = con.establishConnection();
         }
     }
 }

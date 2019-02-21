@@ -40,10 +40,12 @@
             // 
             // B_Login
             // 
+            this.B_Login.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.B_Login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.B_Login.Location = new System.Drawing.Point(106, 227);
+            this.B_Login.Location = new System.Drawing.Point(106, 225);
             this.B_Login.Name = "B_Login";
-            this.B_Login.Size = new System.Drawing.Size(138, 23);
+            this.B_Login.Size = new System.Drawing.Size(146, 23);
             this.B_Login.TabIndex = 0;
             this.B_Login.Text = "Login";
             this.B_Login.UseVisualStyleBackColor = false;
@@ -51,8 +53,10 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(118, 115);
+            this.label1.Location = new System.Drawing.Point(103, 115);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 1;
@@ -60,8 +64,10 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(118, 168);
+            this.label2.Location = new System.Drawing.Point(103, 168);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 2;
@@ -69,28 +75,35 @@
             // 
             // TB_Password
             // 
+            this.TB_Password.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TB_Password.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.TB_Password.Location = new System.Drawing.Point(121, 184);
+            this.TB_Password.Location = new System.Drawing.Point(106, 184);
             this.TB_Password.Name = "TB_Password";
-            this.TB_Password.Size = new System.Drawing.Size(100, 20);
+            this.TB_Password.Size = new System.Drawing.Size(146, 20);
             this.TB_Password.TabIndex = 3;
+            this.TB_Password.UseSystemPasswordChar = true;
             // 
             // TB_Username
             // 
+            this.TB_Username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TB_Username.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.TB_Username.Location = new System.Drawing.Point(121, 131);
+            this.TB_Username.Location = new System.Drawing.Point(106, 131);
             this.TB_Username.Name = "TB_Username";
-            this.TB_Username.Size = new System.Drawing.Size(100, 20);
+            this.TB_Username.Size = new System.Drawing.Size(146, 20);
             this.TB_Username.TabIndex = 4;
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.ErrorImage = null;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(106, 31);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(125, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(133, 50);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
@@ -99,15 +112,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(338, 342);
+            this.ClientSize = new System.Drawing.Size(346, 335);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.TB_Username);
             this.Controls.Add(this.TB_Password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.B_Login);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GUI";
             this.Text = "ECCloud";
+            this.Load += new System.EventHandler(this.GUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

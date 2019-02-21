@@ -17,7 +17,11 @@ namespace EccCloudWeb
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        
+        [WebMethod]
+        public static void Test()
+        {
+
+        }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

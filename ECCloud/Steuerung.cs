@@ -18,6 +18,7 @@ namespace ECCloud
 
         public void Login()
         {
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
