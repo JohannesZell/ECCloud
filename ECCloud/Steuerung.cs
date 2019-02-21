@@ -11,16 +11,19 @@ namespace ECCloud
     class Steuerung
     {
         private GUI dieGUI;
+        private int sessionID = 0;
         public Steuerung(GUI pGUI)
         {
             dieGUI = pGUI;
         }
 
-        public void Login()
+        public void Login(int sessionID, int ConnectionStatus)
         {
-
             MainWindow mainWindow = new MainWindow();
+            this.sessionID = sessionID;
             mainWindow.Show();
+            mainWindow.setSessionID(this.sessionID);
+            mainWindow.setConnectionStatus(1);
         }
 
         private void checkUserValid()

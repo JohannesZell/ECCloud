@@ -39,21 +39,20 @@ namespace ECCloud
 
         private void B_Login_Click(object sender, EventArgs e)
         {
-            int sessionID = 0;
             string User = TB_Username.Text;
             string Password = TB_Password.Text;
             HashAlgorithm sha = new SHA1CryptoServiceProvider();
             int PWHash = Password.GetHashCode();
             string message = con.CallRestMethod("http://localhost:53859/api/CloudAPI/GetFiles?User=" + User + "&PWHash=" + PWHash);
-            if (message == "false")
+            if (message == "0")
             {
                 MessageBox.Show("Please check user or password!");
                 
             }
             else
             {
-                MessageBox.Show("Connected");
-                dieSteuerung.Login();
+                //this.Close();
+                dieSteuerung.Login(Convert.ToInt16(message), 1); //1 stands for connected
             }
 
             

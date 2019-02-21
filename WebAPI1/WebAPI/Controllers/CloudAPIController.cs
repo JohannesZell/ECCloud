@@ -13,7 +13,6 @@ namespace WebAPI.Controllers
 {
     public class CloudAPIController : ApiController
     {
-        HttpResponseMessage response;
         MySqlConnection connection;
         const string server = "localhost";
         const string database = "eccloud";
@@ -34,7 +33,6 @@ namespace WebAPI.Controllers
             //result = DatenBankAbfrage(Statement);
 
             ResultData resultMessage;
-            string Message = "";
             try
             { 
                 connection.Open();
@@ -50,7 +48,8 @@ namespace WebAPI.Controllers
 
                 if(PWHash == Convert.ToInt32(PWHashFromDB))
                 {
-                    response = Request.CreateResponse(HttpStatusCode.OK, true);
+                    int sessionID = generateSessionID(User);
+                    response = Request.CreateResponse(HttpStatusCode.OK, sessionID);
                 }
                 else
                 {
@@ -71,7 +70,19 @@ namespace WebAPI.Controllers
             return response;
         }
 
+        private int generateSessionID(string User)
+        {
+            int sessionID = 0;
 
+            Random rd = new Random();
+            sessionID = rd.Next(0, 100);
+            connection.Open();
+            string sessionUpdate = @"UPDATE `user` SET `SessionID`=" + sessionID + @" WHERE User Like """ + User  + @""";";
+            MySqlCommand cmd = new MySqlCommand(sessionUpdate, connection);
+            Debug.Print(sessionUpdate);
+            cmd.ExecuteNonQuery();
+            return sessionID;
+        }
         private void ActivateConnection()
         {
             connection = new MySqlConnection(connectionString);
