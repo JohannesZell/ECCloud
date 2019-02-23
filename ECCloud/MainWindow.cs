@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,9 +17,12 @@ namespace ECCloud
         private bool status;
         private Connector con;
         private int connectionStatus = 0; //0 = not connected - 1 = connected
+        private Timer timer;
+
         public MainWindow()
         {
             InitializeComponent();
+            con = new Connector();
             PopulateTreeView1();
             PopulateTreeView2();
             AllowDrop = true;
@@ -32,6 +36,18 @@ namespace ECCloud
         public void setSessionID(int sessionID)
         {
             toolStripStatusLabel1.Text = Convert.ToString(sessionID);
+            timer = new Timer();
+            timer.Interval = 600000;
+            timer.Tick += new EventHandler(TimerEventProcessor);
+            timer.Start();
+        }
+
+        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        {
+            timer.Stop();
+            setConnectionStatus(0);
+            MessageBox.Show("Session abgelaufen, bitte neu anmelden!");
+            //Zurueck zur Anmeldung wechseln
         }
 
         public void setConnectionStatus(int connectionStatus)
@@ -47,8 +63,6 @@ namespace ECCloud
                 toolStripConnection.Text = "Not Connected";
                 toolStripConnection.ForeColor = Color.Red;
             }
-
-
         }
 
         private void PopulateTreeView1()
@@ -79,8 +93,7 @@ namespace ECCloud
             }
         }
 
-        private void GetDirectories(DirectoryInfo[] subDirs,
-            TreeNode nodeToAddTo)
+        private void GetDirectories(DirectoryInfo[] subDirs, TreeNode nodeToAddTo)
         {
             TreeNode aNode;
             DirectoryInfo[] subSubDirs;
@@ -101,7 +114,7 @@ namespace ECCloud
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode newSelected = e.Node;
-            listView1.Items.Clear();
+            ListViewLocal.Items.Clear();
             DirectoryInfo nodeDirInfo = (DirectoryInfo)newSelected.Tag;
             ListViewItem.ListViewSubItem[] subItems;
             ListViewItem item = null;
@@ -114,7 +127,7 @@ namespace ECCloud
              new ListViewItem.ListViewSubItem(item,
                 dir.LastAccessTime.ToShortDateString())};
                 item.SubItems.AddRange(subItems);
-                listView1.Items.Add(item);
+                ListViewLocal.Items.Add(item);
             }
             foreach (FileInfo file in nodeDirInfo.GetFiles())
             {
@@ -125,16 +138,16 @@ namespace ECCloud
                 file.LastAccessTime.ToShortDateString())};
 
                 item.SubItems.AddRange(subItems);
-                listView1.Items.Add(item);
+                ListViewLocal.Items.Add(item);
             }
 
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            ListViewLocal.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void treeView2_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode newSelected = e.Node;
-            listView2.Items.Clear();
+            ListViewRemote.Items.Clear();
             DirectoryInfo nodeDirInfo = (DirectoryInfo)newSelected.Tag;
             ListViewItem.ListViewSubItem[] subItems;
             ListViewItem item = null;
@@ -147,7 +160,7 @@ namespace ECCloud
              new ListViewItem.ListViewSubItem(item,
                 dir.LastAccessTime.ToShortDateString())};
                 item.SubItems.AddRange(subItems);
-                listView2.Items.Add(item);
+                ListViewRemote.Items.Add(item);
             }
             foreach (FileInfo file in nodeDirInfo.GetFiles())
             {
@@ -158,10 +171,10 @@ namespace ECCloud
                 file.LastAccessTime.ToShortDateString())};
 
                 item.SubItems.AddRange(subItems);
-                listView2.Items.Add(item);
+                ListViewRemote.Items.Add(item);
             }
 
-            listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            ListViewRemote.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void listView1_MouseMove(object sender, MouseEventArgs e)
@@ -169,8 +182,96 @@ namespace ECCloud
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
                 // Proceed with the drag and drop, passing in the list item.                   
-                DragDropEffects dropEffect = listView1.DoDragDrop(listView1.SelectedItems, DragDropEffects.Move);
+                DragDropEffects dropEffect = ListViewLocal.DoDragDrop(ListViewLocal.SelectedItems, DragDropEffects.Move);
             }
+        }
+
+        private void listView2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                // Proceed with the drag and drop, passing in the list item.                   
+                DragDropEffects dropEffect = ListViewRemote.DoDragDrop(ListViewRemote.SelectedItems, DragDropEffects.Move);
+            }
+        }
+
+        private void listView2_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection)))
+                e.Effect = e.AllowedEffect;
+        }
+
+        private void listView2_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection)))
+            {
+                if (e.Effect == DragDropEffects.Copy)
+                {
+                    foreach (ListViewItem current in (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)))
+                    {
+                        ListViewRemote.Items.Add((ListViewItem)current.Clone());
+                    }
+                }
+                else
+                {
+                    foreach (ListViewItem current in (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)))
+                    {
+                        current.Remove();
+                        ListViewRemote.Items.Add((ListViewItem)current);
+                    }
+                }
+            }
+        }
+
+        private void listView1_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection)))
+                e.Effect = e.AllowedEffect;
+        }
+
+        private void listView1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection)))
+            {
+                if (e.Effect == DragDropEffects.Copy)
+                {
+                    foreach (ListViewItem current in (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)))
+                    {
+                        ListViewLocal.Items.Add((ListViewItem)current.Clone());
+                    }
+                }
+                else
+                {
+                    foreach (ListViewItem current in (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)))
+                    {
+                        current.Remove();
+                        ListViewLocal.Items.Add((ListViewItem)current);
+                    }
+                }
+            }
+        }
+
+        private void startTimer()
+        {
+            timer.Start();
+        }
+
+        private void stopTimer()
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+            }
+        }
+
+        private void MainWindow_Deactivate(object sender, EventArgs e)
+        {
+            startTimer();
+        }
+
+        private void MainWindow_Activated(object sender, EventArgs e)
+        {
+            stopTimer();
         }
     }
 }

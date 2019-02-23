@@ -65,7 +65,9 @@ namespace ECCloud
 
         private void GUI_Load(object sender, EventArgs e)
         {
-            con = new Connector(53859, "127.0.0.1");
+            con = new Connector();
+            con.hostName = "127.0.0.1";
+            con.hostPort = 53859;
             status = con.establishConnection();
         }
     }

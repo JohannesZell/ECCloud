@@ -45,16 +45,16 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.ListViewLocal = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.treeView2 = new System.Windows.Forms.TreeView();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
+            this.ListViewRemote = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -173,17 +173,10 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Panel2.Controls.Add(this.ListViewLocal);
             this.splitContainer1.Size = new System.Drawing.Size(730, 615);
             this.splitContainer1.SplitterDistance = 130;
             this.splitContainer1.TabIndex = 4;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "iconfinder_folder_1055055.png");
-            this.imageList1.Images.SetKeyName(1, "iconfinder_icon-55-document-text_315178.png");
             // 
             // treeView1
             // 
@@ -197,21 +190,31 @@
             this.treeView1.TabIndex = 0;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
-            // listView1
+            // imageList1
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "iconfinder_folder_1055055.png");
+            this.imageList1.Images.SetKeyName(1, "iconfinder_icon-55-document-text_315178.png");
+            // 
+            // ListViewLocal
+            // 
+            this.ListViewLocal.AllowDrop = true;
+            this.ListViewLocal.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(596, 615);
-            this.listView1.SmallImageList = this.imageList1;
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseMove);
+            this.ListViewLocal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ListViewLocal.Location = new System.Drawing.Point(0, 0);
+            this.ListViewLocal.Name = "ListViewLocal";
+            this.ListViewLocal.Size = new System.Drawing.Size(596, 615);
+            this.ListViewLocal.SmallImageList = this.imageList2;
+            this.ListViewLocal.TabIndex = 1;
+            this.ListViewLocal.UseCompatibleStateImageBehavior = false;
+            this.ListViewLocal.View = System.Windows.Forms.View.Details;
+            this.ListViewLocal.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView1_DragDrop);
+            this.ListViewLocal.DragOver += new System.Windows.Forms.DragEventHandler(this.listView1_DragOver);
+            this.ListViewLocal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseMove);
             // 
             // columnHeader1
             // 
@@ -237,17 +240,10 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.listView2);
+            this.splitContainer2.Panel2.Controls.Add(this.ListViewRemote);
             this.splitContainer2.Size = new System.Drawing.Size(754, 615);
             this.splitContainer2.SplitterDistance = 130;
             this.splitContainer2.TabIndex = 5;
-            // 
-            // imageList2
-            // 
-            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
-            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList2.Images.SetKeyName(0, "iconfinder_folder_1055055.png");
-            this.imageList2.Images.SetKeyName(1, "iconfinder_icon-55-document-text_315178.png");
             // 
             // treeView2
             // 
@@ -261,20 +257,31 @@
             this.treeView2.TabIndex = 0;
             this.treeView2.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView2_NodeMouseClick);
             // 
-            // listView2
+            // imageList2
             // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
+            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList2.Images.SetKeyName(0, "iconfinder_folder_1055055.png");
+            this.imageList2.Images.SetKeyName(1, "iconfinder_icon-55-document-text_315178.png");
+            // 
+            // ListViewRemote
+            // 
+            this.ListViewRemote.AllowDrop = true;
+            this.ListViewRemote.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6});
-            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView2.Location = new System.Drawing.Point(0, 0);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(620, 615);
-            this.listView2.SmallImageList = this.imageList2;
-            this.listView2.TabIndex = 0;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
+            this.ListViewRemote.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ListViewRemote.Location = new System.Drawing.Point(0, 0);
+            this.ListViewRemote.Name = "ListViewRemote";
+            this.ListViewRemote.Size = new System.Drawing.Size(620, 615);
+            this.ListViewRemote.SmallImageList = this.imageList2;
+            this.ListViewRemote.TabIndex = 0;
+            this.ListViewRemote.UseCompatibleStateImageBehavior = false;
+            this.ListViewRemote.View = System.Windows.Forms.View.Details;
+            this.ListViewRemote.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView2_DragDrop);
+            this.ListViewRemote.DragOver += new System.Windows.Forms.DragEventHandler(this.listView2_DragOver);
+            this.ListViewRemote.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listView2_MouseMove);
             // 
             // columnHeader4
             // 
@@ -301,6 +308,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
             this.Text = "MainWindow";
+            this.Activated += new System.EventHandler(this.MainWindow_Activated);
+            this.Deactivate += new System.EventHandler(this.MainWindow_Deactivate);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -338,14 +347,14 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView ListViewLocal;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.TreeView treeView2;
         private System.Windows.Forms.ImageList imageList2;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView ListViewRemote;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;

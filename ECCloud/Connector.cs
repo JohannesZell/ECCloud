@@ -13,18 +13,17 @@ namespace ECCloud
 
     class Connector
     {
-        private int hostPort;
-        private string hostName;
+        public int hostPort { get; set; }
+        public string hostName { get; set; }
         private IPAddress host;
         private IPEndPoint hostep;
         Socket sock;
 
-        public Connector(int hostPort, string hostName)
+        public Connector()
         {
-            this.hostName = hostName;
-            this.hostPort = hostPort;
 
         }
+
 
         public bool establishConnection()
         {
