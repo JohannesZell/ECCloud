@@ -73,10 +73,39 @@ namespace WebAPI.Controllers
         private int generateSessionID(string User)
         {
             int sessionID = 0;
-
+            Boolean equal = false;  // Session-ID already existing?
             Random rd = new Random();
-            sessionID = rd.Next(0, 100);
-            connection.Open();
+
+
+            do {
+
+                sessionID = rd.Next(0, 100);
+                connection.Open();
+
+                try
+                {
+                    string statement = @"Select SessionID From User;";
+                    MySqlCommand getSession = new MySqlCommand(statement, connection);
+
+                    var reader = getSession.ExecuteReader();
+
+
+
+                    while (reader.Read())
+                    {
+                        string IDFromDB = reader.GetString(0);
+                        if (IDFromDB == Convert.ToString(sessionID)) ;
+                        {
+                            equal = true;
+                        }
+                    }
+                    connection.Close();
+
+
+                }
+                catch (Exception ex) { }
+            } while (equal == true);
+
             string sessionUpdate = @"UPDATE `user` SET `SessionID`=" + sessionID + @" WHERE User Like """ + User  + @""";";
             MySqlCommand cmd = new MySqlCommand(sessionUpdate, connection);
             Debug.Print(sessionUpdate);
