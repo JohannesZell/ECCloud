@@ -43,7 +43,7 @@ namespace ECCloud
             string Password = TB_Password.Text;
             HashAlgorithm sha = new SHA1CryptoServiceProvider();
             int PWHash = Password.GetHashCode();
-            string message = con.CallRestMethod("http://localhost:53859/api/CloudAPI/GetFiles?User=" + User + "&PWHash=" + PWHash);
+            string message = con.CallRestMethod("http://localhost:53859/api/CloudAPI/CheckUser?User=" + User + "&PWHash=" + PWHash);
             if (message == "0")
             {
                 MessageBox.Show("Please check user or password!");

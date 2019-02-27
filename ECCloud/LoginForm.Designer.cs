@@ -82,6 +82,7 @@
             this.TB_Password.Name = "TB_Password";
             this.TB_Password.Size = new System.Drawing.Size(146, 20);
             this.TB_Password.TabIndex = 3;
+            this.TB_Password.Text = "Eccloud";
             this.TB_Password.UseSystemPasswordChar = true;
             // 
             // TB_Username
@@ -93,6 +94,7 @@
             this.TB_Username.Name = "TB_Username";
             this.TB_Username.Size = new System.Drawing.Size(146, 20);
             this.TB_Username.TabIndex = 4;
+            this.TB_Username.Text = "ZeJo";
             // 
             // pictureBox1
             // 

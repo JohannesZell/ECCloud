@@ -273,5 +273,34 @@ namespace ECCloud
         {
             stopTimer();
         }
+
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filePath = "";
+
+
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ListViewItem item = null;
+                ListViewItem.ListViewSubItem[] subItems;
+
+                filePath = fileDialog.FileName;
+                int index = filePath.LastIndexOf("\\");
+                filePath = filePath.Remove(0, index + 1);
+                Debug.Print(filePath);
+
+                File.Copy(fileDialog.FileName, @"C:\Users\johan\ECcloud\Remote" + filePath);
+
+                item = new ListViewItem(filePath, 1);
+                subItems = new ListViewItem.ListViewSubItem[]
+                    {
+                        new ListViewItem.ListViewSubItem(item, "File"), new ListViewItem.ListViewSubItem(item, File.GetLastAccessTime(fileDialog.FileName).ToString())
+                    };
+                item.SubItems.AddRange(subItems);
+                ListViewRemote.Items.Add(item);
+                
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
                 database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
 
         [HttpGet]
-        public HttpResponseMessage GetFiles(string User, int PWHash)
+        public HttpResponseMessage CheckUser(string User, int PWHash)
         {
             HttpResponseMessage response;
             bool result = false;
