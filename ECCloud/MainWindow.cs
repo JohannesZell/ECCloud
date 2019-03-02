@@ -6,9 +6,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ECCloud
 {
@@ -18,6 +21,10 @@ namespace ECCloud
         private Connector con;
         private int connectionStatus = 0; //0 = not connected - 1 = connected
         private Timer timer;
+        private EncryptionClass encryptionClass;
+        private string activeDirectoryLocal = "";
+        private string activeDirectoryRemote = @"C:\Users\johan\ECcloud\";
+
 
         public MainWindow()
         {
@@ -26,6 +33,7 @@ namespace ECCloud
             PopulateTreeView1();
             PopulateTreeView2();
             AllowDrop = true;
+            encryptionClass = new EncryptionClass(this);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -53,7 +61,7 @@ namespace ECCloud
         public void setConnectionStatus(int connectionStatus)
         {
             this.connectionStatus = connectionStatus;
-            if(this.connectionStatus == 1)
+            if (this.connectionStatus == 1)
             {
                 toolStripConnection.Text = "Connected";
                 toolStripConnection.ForeColor = Color.Green;
@@ -118,6 +126,8 @@ namespace ECCloud
             DirectoryInfo nodeDirInfo = (DirectoryInfo)newSelected.Tag;
             ListViewItem.ListViewSubItem[] subItems;
             ListViewItem item = null;
+            activeDirectoryLocal = @"C:\Users\johan\ECcloud\Local\";
+
 
             foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories())
             {
@@ -140,7 +150,8 @@ namespace ECCloud
                 item.SubItems.AddRange(subItems);
                 ListViewLocal.Items.Add(item);
             }
-
+            activeDirectoryLocal += nodeDirInfo.ToString();
+            Debug.Print(activeDirectoryLocal);
             ListViewLocal.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
@@ -151,6 +162,8 @@ namespace ECCloud
             DirectoryInfo nodeDirInfo = (DirectoryInfo)newSelected.Tag;
             ListViewItem.ListViewSubItem[] subItems;
             ListViewItem item = null;
+            activeDirectoryRemote = @"C:\Users\johan\ECcloud\Remote\";
+
 
             foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories())
             {
@@ -173,7 +186,7 @@ namespace ECCloud
                 item.SubItems.AddRange(subItems);
                 ListViewRemote.Items.Add(item);
             }
-
+            activeDirectoryRemote += nodeDirInfo.ToString();
             ListViewRemote.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
@@ -210,6 +223,7 @@ namespace ECCloud
                     foreach (ListViewItem current in (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)))
                     {
                         ListViewRemote.Items.Add((ListViewItem)current.Clone());
+                        Debug.Print(ListViewRemote.Items.ToString());
                     }
                 }
                 else
@@ -218,6 +232,8 @@ namespace ECCloud
                     {
                         current.Remove();
                         ListViewRemote.Items.Add((ListViewItem)current);
+                        copyFile(current.Text, true);
+
                     }
                 }
             }
@@ -246,6 +262,7 @@ namespace ECCloud
                     {
                         current.Remove();
                         ListViewLocal.Items.Add((ListViewItem)current);
+                        copyFile(current.ToString(),false);
                     }
                 }
             }
@@ -264,6 +281,20 @@ namespace ECCloud
             }
         }
 
+        private void copyFile(string file, bool remote)
+        {
+
+            if (remote)
+            {
+                string directory = activeDirectoryRemote + @"\" + file;
+                File.Copy(directory, activeDirectoryLocal + @"\" + file);
+            }
+            else
+            {
+                File.Copy(activeDirectoryLocal + @"\" + file, activeDirectoryRemote + @"\" + file);
+            }
+        }
+
         private void MainWindow_Deactivate(object sender, EventArgs e)
         {
             startTimer();
@@ -277,7 +308,7 @@ namespace ECCloud
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string filePath = "";
-
+            string encryptedFilePath = "";
 
             OpenFileDialog fileDialog = new OpenFileDialog();
             if (fileDialog.ShowDialog() == DialogResult.OK)
@@ -289,8 +320,9 @@ namespace ECCloud
                 int index = filePath.LastIndexOf("\\");
                 filePath = filePath.Remove(0, index + 1);
                 Debug.Print(filePath);
-
-                File.Copy(fileDialog.FileName, @"C:\Users\johan\ECcloud\Remote" + filePath);
+                
+                encryptedFilePath = encryptionClass.encryptFile(fileDialog.FileName, "ThePasswordToDecryptAndEncryptTheFile");
+                File.Copy(encryptedFilePath, @"C:\Users\johan\ECcloud\Remote" + filePath);
 
                 item = new ListViewItem(filePath, 1);
                 subItems = new ListViewItem.ListViewSubItem[]
@@ -299,8 +331,48 @@ namespace ECCloud
                     };
                 item.SubItems.AddRange(subItems);
                 ListViewRemote.Items.Add(item);
-                
+
             }
+        }
+
+
+        private void encryptFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                encryptionClass.encryptFile(fileDialog.FileName, "ThePasswordToDecryptAndEncryptTheFile");
+
+            }
+        }
+
+        private void decryptFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+  
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string file = fileDialog.FileName;
+                int index = file.LastIndexOf(".");
+                file = file.Remove(index);
+                Debug.Print(file);
+                encryptionClass.FileDecrypt(fileDialog.FileName,  file, "ThePasswordToDecryptAndEncryptTheFile");
+            }
+        }
+
+        public void updateProgress(int progress)
+        {
+            UploadProgress.Value = progress;
+        }
+
+        public void setMinProgress(int minProgress)
+        {
+            UploadProgress.Minimum = minProgress;
+        }
+
+        public void setMaxProgress(int maxProgress)
+        {
+            UploadProgress.Maximum = maxProgress;
         }
     }
 }

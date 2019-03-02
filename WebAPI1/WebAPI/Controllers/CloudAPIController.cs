@@ -1,13 +1,12 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Security.Cryptography;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace WebAPI.Controllers
 {
@@ -75,8 +74,8 @@ namespace WebAPI.Controllers
             int sessionID = 0;
             Boolean equal = false;  // Session-ID already existing?
             Random rd = new Random();
-
-
+            sessionID = rd.Next(0, 100);
+            /*
             do {
 
                 sessionID = rd.Next(0, 100);
@@ -88,9 +87,6 @@ namespace WebAPI.Controllers
                     MySqlCommand getSession = new MySqlCommand(statement, connection);
 
                     var reader = getSession.ExecuteReader();
-
-
-
                     while (reader.Read())
                     {
                         string IDFromDB = reader.GetString(0);
@@ -105,11 +101,11 @@ namespace WebAPI.Controllers
                 }
                 catch (Exception ex) { }
             } while (equal == true);
-
+            */
             string sessionUpdate = @"UPDATE `user` SET `SessionID`=" + sessionID + @" WHERE User Like """ + User  + @""";";
             MySqlCommand cmd = new MySqlCommand(sessionUpdate, connection);
             Debug.Print(sessionUpdate);
-            cmd.ExecuteNonQuery();
+            //cmd.ExecuteNonQuery();
             return sessionID;
         }
         private void ActivateConnection()
